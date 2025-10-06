@@ -7,7 +7,7 @@ import urllib.parse
 
 # PIA uses the CN attribute for certificates they issue themselves.
 # This will be deprecated by urllib3 at some point in the future, and generates a warning (that we ignore).
-urllib3.disable_warnings(urllib3.exceptions.SubjectAltNameWarning)
+#urllib3.disable_warnings(urllib3.exceptions.SubjectAltNameWarning)
 
 
 class piawg:
@@ -21,7 +21,7 @@ class piawg:
         self.connection = None
 
     def get_server_list(self):
-        r = requests.get('https://serverlist.piaservers.net/vpninfo/servers/v4')
+        r = requests.get('https://serverlist.piaservers.net/vpninfo/servers/v6')
         # Only process first line of response, there's some base64 data at the end we're ignoring
         data = json.loads(r.text.splitlines()[0])
         for server in data['regions']:

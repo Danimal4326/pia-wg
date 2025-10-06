@@ -28,6 +28,9 @@ def main():
 
     pia = piawg()
 
+    # generate public and private key pair
+    pia.generate_keys()
+
     if args.command == 'get-locations':
         print_locations(pia)
         return
@@ -40,8 +43,6 @@ def main():
             print_locations(pia)
             return
 
-        # generate public and private key pair
-        pia.generate_keys()
         pia.set_region(location)
         print(f"Selected '{location}'")
 
@@ -63,7 +64,7 @@ def main():
 
         # Build config
         config_filename = args.output_name
-        
+
         # Use the specified output directory or the current directory
         output_dir = args.output_dir if args.output_dir else os.getcwd()
         config_path = os.path.join(output_dir, config_filename)
@@ -72,20 +73,20 @@ def main():
         os.makedirs(output_dir, exist_ok=True)
 
         print(f"Saving configuration file: {config_path}")
-        
+
         # get current time for the comment
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
+
         with open(config_path, 'w') as file:
             file.write(f"# configuration generated on {current_time}\n\n")
-        
+
         # Get current time for the comment
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
+
         with open(config_path, 'w') as file:
             file.write(f"# PIA WireGuard configuration generated on {current_time}\n\n")
             file.write('[Interface]\n')
-            file.write(f'Address = {pia.connection["peer_ip"]}\n')
+            file.write(f'Address = {pia.connection["peer_ip"]}/32\n')
             file.write(f'PrivateKey = {pia.privatekey}\n')
             file.write(f'DNS = {pia.connection["dns_servers"][0]},{pia.connection["dns_servers"][1]}\n\n')
             file.write('[Peer]\n')
